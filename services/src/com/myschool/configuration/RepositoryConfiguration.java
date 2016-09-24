@@ -4,7 +4,6 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,6 +59,8 @@ public class RepositoryConfiguration {
 	public HibernateTemplate getHibernateTemplate(SessionFactory sessionFactory){
 		
 		HibernateTemplate hibernateTemplate = new HibernateTemplate(sessionFactory);
+//		hibernateTemplate.getSessionFactory().getCurrentSession().setFlushMode(FlushMode.AUTO);
+//      If i remove the abv line then i will get you have read only permission
 		return hibernateTemplate;
 	}
 

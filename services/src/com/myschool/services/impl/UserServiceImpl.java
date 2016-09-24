@@ -2,12 +2,14 @@ package com.myschool.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.myschool.dao.UserDao;
 import com.myschool.dto.User;
 import com.myschool.services.UserService;
 
 @Service
+@Transactional(readOnly=false)
 public class UserServiceImpl implements UserService {
 
 	@Autowired
