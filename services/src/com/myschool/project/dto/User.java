@@ -1,16 +1,14 @@
-package com.myschool.dto;
+package com.myschool.project.dto;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import org.hibernate.annotations.Entity;
 
 @Entity
 public class User {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue
 	String userId;
 	public String getUserId() {
 		return userId;

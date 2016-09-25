@@ -1,4 +1,4 @@
-package com.myschool.services;
+package com.myschool.project.services;
 
 public interface UserService {
 

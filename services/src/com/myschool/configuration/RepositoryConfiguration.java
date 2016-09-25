@@ -4,18 +4,19 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @Configuration
+@EnableTransactionManagement
 public class RepositoryConfiguration {
 	
 	@Value("${jdbc.driverClassName}")
@@ -34,9 +35,10 @@ public class RepositoryConfiguration {
     @Value("${hibernate.hbm2ddl.auto}") 
     private String hibernateHbm2ddlAuto;
     
+    
 	@Bean
 	public DataSource getDataSource(){
-		DriverManagerDataSource datasource = new DriverManagerDataSource();
+		BasicDataSource datasource = new BasicDataSource();
 		datasource.setDriverClassName(driverClassName);
 		datasource.setUrl(url);
 		datasource.setUsername(username);
@@ -46,32 +48,14 @@ public class RepositoryConfiguration {
 	
 	@Bean
 	@Autowired
-	public HibernateTransactionManager transcationManager(SessionFactory sessionFactory){
-		
-		HibernateTransactionManager transcationManager = new HibernateTransactionManager();
-		transcationManager.setSessionFactory(sessionFactory);
-		return transcationManager;
-		
-	}
-	
-	@Bean
-	@Autowired
-	public HibernateTemplate getHibernateTemplate(SessionFactory sessionFactory){
-		
-		HibernateTemplate hibernateTemplate = new HibernateTemplate(sessionFactory);
-//		hibernateTemplate.getSessionFactory().getCurrentSession().setFlushMode(FlushMode.AUTO);
-//      If i remove the abv line then i will get you have read only permission
-		return hibernateTemplate;
-	}
-
-	@Bean
-	public LocalSessionFactoryBean getSessionFactory(){
-		
-		LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
-		localSessionFactoryBean.setDataSource(getDataSource());
-		localSessionFactoryBean.setHibernateProperties(getHibernateProperties());
-		localSessionFactoryBean.setPackagesToScan(new String[]{"com.myschool"});
-		return localSessionFactoryBean;
+	public SessionFactory getSessionFactory(DataSource dataSource) {
+	 
+	    LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
+	 
+	    sessionBuilder.scanPackages("com.myschool");
+	    sessionBuilder.addProperties(getHibernateProperties());
+	    
+	    return sessionBuilder.buildSessionFactory();
 	}
 	
 	@Bean
@@ -86,4 +70,14 @@ public class RepositoryConfiguration {
         return properties;
 		
 	}
+	
+	@Bean
+	@Autowired
+	public HibernateTransactionManager transcationManager(SessionFactory sessionFactory){
+		
+		HibernateTransactionManager transcationManager = new HibernateTransactionManager(sessionFactory);
+		return transcationManager;
+		
+	}
+	
 }

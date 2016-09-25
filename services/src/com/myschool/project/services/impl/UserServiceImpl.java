@@ -1,23 +1,21 @@
-package com.myschool.services.impl;
+package com.myschool.project.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.myschool.dao.UserDao;
-import com.myschool.dto.User;
-import com.myschool.services.UserService;
+import com.myschool.project.dao.UserDao;
+import com.myschool.project.dto.User;
+import com.myschool.project.services.UserService;
 
 @Service
-@Transactional(readOnly=false)
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	UserDao userdao;
+	private UserDao userdao;
 	
 	@Override
 	public boolean addNewUser(String username) {
-		System.out.println(userdao);
+
 		User user = new User();
 		user.setUserName("Abraham");
 		

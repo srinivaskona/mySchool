@@ -1,6 +1,6 @@
-package com.myschool.dao;
+package com.myschool.project.dao;
 
-import com.myschool.dto.User;
+import com.myschool.project.dto.User;
 
 public interface UserDao {
 	

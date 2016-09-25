@@ -6,24 +6,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 
-import com.myschool.dao.UserDao;
-import com.myschool.dao.impl.UserDaoImpl;
-import com.myschool.services.UserService;
-import com.myschool.services.impl.UserServiceImpl;
-
 @Import({RepositoryConfiguration.class})
 @Configuration
 public class SpringConfiguration {
 
-	@Bean
-	public UserDao getUserDao(){
-		return new UserDaoImpl();
+/*	@Autowired
+	@Bean(name="userDao")
+	public UserDao getUserDao(SessionFactory sessionFactory){
+		return new UserDaoImpl(sessionFactory);
 	}
 	
 	@Bean
 	public UserService getUserService(){
 		return new UserServiceImpl();
-	}
+	}*/
 	
 	@Bean
 	public PropertyPlaceholderConfigurer getPropertyPlaceHolderConfigurer(){
