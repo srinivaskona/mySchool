@@ -13,17 +13,16 @@ import com.myschool.project.dto.User;
 public class UserDaoImpl implements UserDao {
 
 	@Autowired
-    private SessionFactory sessionFactory;
-	
+	private SessionFactory sessionFactory;
+
 	public UserDaoImpl() {
 	}
-	
+
 	public UserDaoImpl(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-	
+
 	@Override
-	@Transactional
 	public boolean addNewUser(User user) {
 		sessionFactory.getCurrentSession().save(user);
 		return true;

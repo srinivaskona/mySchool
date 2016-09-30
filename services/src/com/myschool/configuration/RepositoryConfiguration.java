@@ -4,19 +4,18 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
+
+import com.zaxxer.hikari.HikariDataSource;
 
 
 @Configuration
-@EnableTransactionManagement
 public class RepositoryConfiguration {
 	
 	@Value("${jdbc.driverClassName}")
@@ -38,21 +37,20 @@ public class RepositoryConfiguration {
     
 	@Bean
 	public DataSource getDataSource(){
-		BasicDataSource datasource = new BasicDataSource();
+		HikariDataSource datasource = new HikariDataSource();
+		datasource.setMaximumPoolSize(100);
 		datasource.setDriverClassName(driverClassName);
-		datasource.setUrl(url);
+		datasource.setJdbcUrl(url);
 		datasource.setUsername(username);
 		datasource.setPassword(password);
 		return datasource;
 	}
 	
 	@Bean
-	@Autowired
 	public SessionFactory getSessionFactory(DataSource dataSource) {
 	 
 	    LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
-	 
-	    sessionBuilder.scanPackages("com.myschool");
+	    sessionBuilder.scanPackages("com.myschool.project");
 	    sessionBuilder.addProperties(getHibernateProperties());
 	    
 	    return sessionBuilder.buildSessionFactory();

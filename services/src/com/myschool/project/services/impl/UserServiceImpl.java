@@ -1,5 +1,7 @@
 package com.myschool.project.services.impl;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,9 @@ public class UserServiceImpl implements UserService {
 	public boolean addNewUser(String username) {
 
 		User user = new User();
-		user.setUserName("Abraham");
+//		user.setUserId("1235");
+		user.setUserName("Tej");
+		user.setUserCreation(new Date());
 		
 		userdao.addNewUser(user);
 		
